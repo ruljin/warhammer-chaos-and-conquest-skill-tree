@@ -1,0 +1,19 @@
+.button {
+	width: 288px;
+	height: 56px;
+	background-image: url("../../assets/button.png");
+	color: #fff;
+	text-transform: capitalize;
+	text-decoration: none;
+
+	&:hover {
+		filter: brightness(125%);
+	}
+
+	&__link {
+		align-items: center;
+		justify-content: center;
+		display: inline-flex;
+		line-height: 0px;
+	}
+}
