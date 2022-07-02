@@ -99,7 +99,7 @@ const VANQUISH_SPEED_II = {
 		"Increase the march speed of your Chaos Champion when on a vanquish march.",
 	icon: "../src/assets/temporary.png",
 	maxLevel: 25,
-	bonusType: "Champion Stamina Regen per Minute",
+	bonusType: "Vanquish Speed",
 	bonusSheet: [
 		{ level: 1, value: 1.5 },
 		{ level: 2, value: 3 },
@@ -195,7 +195,7 @@ const VANQUISH_SPEED_I = {
 		"Increase the march speed of your Chaos Champion when on a vanquish march.",
 	icon: "../src/assets/temporary.png",
 	maxLevel: 15,
-	bonusType: "Champion Stamina Regen per Minute",
+	bonusType: "Vanquish Speed",
 	bonusSheet: [
 		{ level: 1, value: 1 },
 		{ level: 2, value: 2 },
