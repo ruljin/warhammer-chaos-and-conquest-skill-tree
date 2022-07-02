@@ -10,6 +10,7 @@ type ButtonProps = {
 	onClick?: () => void;
 	onRightClick?: () => void;
 	to?: string;
+	isMaxed?: boolean;
 	isImageButton?: boolean;
 };
 
@@ -20,11 +21,13 @@ export const Button = ({
 	onClick,
 	onRightClick,
 	to,
+	isMaxed = false,
 	isImageButton = false,
 }: ButtonProps) => {
 	const classes = clsx(styles.button, {
 		[styles.button__link]: to,
 		[styles.button__image]: isImageButton,
+		[styles["button__image--max"]]: isMaxed,
 	});
 
 	const handleContextMenuClick = (e: MouseEvent<HTMLButtonElement>) => {
