@@ -10,6 +10,14 @@
 		filter: brightness(125%);
 	}
 
+	&__image {
+		width: 115px;
+		height: 90px;
+		padding: 0;
+		border: none;
+		background-image: none;
+	}
+
 	&__link {
 		align-items: center;
 		justify-content: center;
