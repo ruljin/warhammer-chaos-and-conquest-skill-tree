@@ -10,12 +10,14 @@
   "dependencies": {
     "clsx": "^1.1.1",
     "eslint-config-prettier": "^8.5.0",
+    "lodash.groupby": "^4.6.0",
     "prettier": "^2.7.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.3.0"
   },
   "devDependencies": {
+    "@types/lodash.groupby": "^4.6.7",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "@types/react-router-dom": "^5.3.3",

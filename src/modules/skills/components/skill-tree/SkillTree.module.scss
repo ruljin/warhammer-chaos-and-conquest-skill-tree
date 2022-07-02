@@ -1,0 +1,22 @@
+.tree {
+	justify-content: center;
+	display: flex;
+	width: 100%;
+
+	&__column {
+		flex-direction: column;
+		display: flex;
+	}
+
+	&__row {
+		justify-content: center;
+		display: flex;
+		min-height: 150px;
+	}
+}
+
+.skill {
+	&__name {
+		color: #fff;
+	}
+}
