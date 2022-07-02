@@ -1,6 +1,8 @@
 import { createContext, ReactNode, useState } from "react";
 import groupBy from "lodash.groupby";
-import { SelectedSkill } from "../models/Skill";
+import { calculateBonuses } from "../utils/calculateBonuses";
+import { SelectedSkill, Skill } from "../models/Skill";
+import { Requirement } from "../models/Requirement";
 import { Bonus } from "../models/Bonus";
 
 type SkillTreeContextProps = {
@@ -16,13 +18,15 @@ type SkillTreeContextProps = {
 		isPercentage: boolean;
 	}) => void;
 	handleDecreaseSkillLevel: (name: string) => void;
+	checkIfAnyChildIsSelected: (childrenSkills?: Skill[]) => boolean;
 	checkSelectedSkillLevel: (name: string) => number;
-	checkIsSkillRequirementNotMet: (requirement?: SelectedSkill) => boolean;
-	getSummary: () => {
+	checkIsSkillRequirementNotMet: (requirement?: Requirement) => boolean;
+	getSummary: () => ({
 		name: string;
 		value: number;
 		isPercentage: boolean;
-	}[];
+	} | null)[];
+	resetSkills: () => void;
 };
 
 type SkillTreeProviderProps = {
@@ -77,13 +81,25 @@ export const SkillTreeProvider = ({ children }: SkillTreeProviderProps) => {
 		setSelectedSkills(selectedSkills.filter((skill) => skill.name !== name));
 	};
 
+	const checkIfAnyChildIsSelected = (childrenSkills?: Skill[]) => {
+		if (!childrenSkills?.length) {
+			return false;
+		}
+
+		const childrenNamesArray = childrenSkills.map(({ name }) => name);
+
+		return selectedSkills.some(({ name, currentLevel }) => {
+			return childrenNamesArray.includes(name) && currentLevel > 0;
+		});
+	};
+
 	const checkSelectedSkillLevel = (name: string) => {
 		const selectedSkill = selectedSkills.find((skill) => skill.name === name);
 
 		return selectedSkill?.currentLevel ?? 0;
 	};
 
-	const checkIsSkillRequirementNotMet = (requirement?: SelectedSkill) => {
+	const checkIsSkillRequirementNotMet = (requirement?: Requirement) => {
 		if (!requirement) {
 			return false;
 		}
@@ -107,7 +123,9 @@ export const SkillTreeProvider = ({ children }: SkillTreeProviderProps) => {
 
 		const summary = Object.entries(selectedSkillsGroupedByBonusType).map(
 			(skillGroupEntries) => {
-				console.log(skillGroupEntries);
+				if (skillGroupEntries[1][0].currentLevel === 0) {
+					return null;
+				}
 
 				return {
 					name: skillGroupEntries[0],
@@ -117,15 +135,19 @@ export const SkillTreeProvider = ({ children }: SkillTreeProviderProps) => {
 			}
 		);
 
-		return summary;
+		return summary.filter((row) => row !== null);
 	};
+
+	const resetSkills = () => setSelectedSkills([]);
 
 	const value = {
 		handleIncreaseSkillLevel,
 		handleDecreaseSkillLevel,
+		checkIfAnyChildIsSelected,
 		checkSelectedSkillLevel,
 		checkIsSkillRequirementNotMet,
 		getSummary,
+		resetSkills,
 	};
 
 	return (
@@ -133,14 +155,4 @@ export const SkillTreeProvider = ({ children }: SkillTreeProviderProps) => {
 			{children}
 		</SkillTreeContext.Provider>
 	);
-};
-
-const calculateBonuses = (skills: SelectedSkill[]) => {
-	let value = 0;
-
-	skills.forEach(({ currentLevel, bonusSheet }) => {
-		value += bonusSheet[currentLevel - 1].value;
-	});
-
-	return value;
 };
