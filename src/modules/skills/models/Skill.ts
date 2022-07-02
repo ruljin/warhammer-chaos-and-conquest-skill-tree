@@ -1,4 +1,5 @@
 import { Bonus } from "./Bonus";
+import { Requirement } from "./Requirement";
 
 export type SelectedSkill = Pick<
 	Skill,
@@ -16,5 +17,5 @@ export type Skill = {
 	bonusSheet: Bonus[];
 	isPercentage: boolean;
 	childrenSkills?: Skill[];
-	requirement?: SelectedSkill;
+	requirement?: Requirement;
 };
