@@ -1,31 +1,75 @@
+import clsx from "clsx";
 import { SkillTreeProvider } from "../../context/SkillTreeContext";
 import { Button, Tooltip } from "../../../../components";
 import { Skill } from "../../models/Skill";
 import styles from "./SkillTree.module.scss";
 import { useSkillTree } from "../../hooks/useSkillTree";
+import { useEffect } from "react";
 
-type SkillsRowProps = Pick<SkillTreeProps, "skills">;
+type SkillsRowProps = Pick<
+	SkillTreeProps,
+	| "level"
+	| "skills"
+	| "skillPoints"
+	| "skillPointsMax"
+	| "handleDecrementSkillPoints"
+	| "handleIncrementSkillPoints"
+>;
 
 type SkillLabelProps = {
 	currentLevel: number;
 	maxLevel: number;
 };
 
-type SkillNodeProps = SkillColumnProps;
+type SkillNodeProps = Pick<
+	SkillColumnProps,
+	| "skill"
+	| "skillPoints"
+	| "skillPointsMax"
+	| "handleDecrementSkillPoints"
+	| "handleIncrementSkillPoints"
+>;
 
-type SkillColumnProps = {
+type SkillColumnProps = Pick<
+	SkillTreeProps,
+	| "level"
+	| "skillPoints"
+	| "skillPointsMax"
+	| "handleDecrementSkillPoints"
+	| "handleIncrementSkillPoints"
+> & {
 	skill: Skill;
 };
 
 type SkillTreeProps = {
 	skills: Skill[];
 	showSummary?: boolean;
+	level: number;
+	skillPoints: number;
+	skillPointsMax: number;
+	handleDecrementSkillPoints: () => void;
+	handleIncrementSkillPoints: () => void;
 };
 
-const SkillsRow = ({ skills }: SkillsRowProps) => (
+const SkillsRow = ({
+	skills,
+	level,
+	skillPoints,
+	skillPointsMax,
+	handleDecrementSkillPoints,
+	handleIncrementSkillPoints,
+}: SkillsRowProps) => (
 	<div className={styles.tree__row}>
 		{skills.map((skill) => (
-			<SkillsColumn key={skill.name} skill={skill} />
+			<SkillsColumn
+				key={skill.name}
+				skill={skill}
+				level={level}
+				skillPoints={skillPoints}
+				skillPointsMax={skillPointsMax}
+				handleDecrementSkillPoints={handleDecrementSkillPoints}
+				handleIncrementSkillPoints={handleIncrementSkillPoints}
+			/>
 		))}
 	</div>
 );
@@ -42,8 +86,19 @@ const SkillLabel = ({ currentLevel, maxLevel }: SkillLabelProps) => (
 	</div>
 );
 
-const SkillNode = ({ skill }: SkillNodeProps) => {
+const SkillNode = ({
+	skill,
+	skillPoints,
+	skillPointsMax,
+	handleDecrementSkillPoints,
+	handleIncrementSkillPoints,
+}: SkillNodeProps) => {
+	const tooltipClasses = clsx(
+		styles.tooltip__text,
+		styles["tooltip__text--bold"]
+	);
 	const {
+		checkIfAnyChildIsSelected,
 		checkIsSkillRequirementNotMet,
 		checkSelectedSkillLevel,
 		handleIncreaseSkillLevel,
@@ -57,6 +112,7 @@ const SkillNode = ({ skill }: SkillNodeProps) => {
 		bonusType,
 		bonusSheet,
 		isPercentage,
+		childrenSkills,
 		requirement,
 	} = skill;
 	const isSkillRequirementNotMet = checkIsSkillRequirementNotMet(requirement);
@@ -64,14 +120,24 @@ const SkillNode = ({ skill }: SkillNodeProps) => {
 	const isSkillMaxed = skillCurrentLevel === maxLevel;
 
 	const handleClick = () => {
+		if (skillPoints === 0) {
+			return;
+		}
+
+		handleDecrementSkillPoints();
 		handleIncreaseSkillLevel({ name, bonusType, bonusSheet, isPercentage });
 	};
 
 	const handleRightClick = () => {
-		if (skillCurrentLevel === 0) {
+		if (
+			skillPoints === skillPointsMax ||
+			skillCurrentLevel === 0 ||
+			checkIfAnyChildIsSelected(childrenSkills)
+		) {
 			return;
 		}
 
+		handleIncrementSkillPoints();
 		handleDecreaseSkillLevel(name);
 	};
 
@@ -79,16 +145,26 @@ const SkillNode = ({ skill }: SkillNodeProps) => {
 		<>
 			<p>{description}</p>
 			<p>
-				Current bonus:
-				{bonusSheet[skillCurrentLevel - 1]
-					? bonusSheet[skillCurrentLevel - 1].value
-					: "-"}
+				<span className={tooltipClasses}>Current bonus:</span>
+				{bonusSheet[skillCurrentLevel - 1] ? (
+					<>
+						{bonusSheet[skillCurrentLevel - 1].value}
+						{isPercentage && "%"}
+					</>
+				) : (
+					"-"
+				)}
 			</p>
 			<p>
-				With next point:{" "}
-				{bonusSheet[skillCurrentLevel]
-					? bonusSheet[skillCurrentLevel].value
-					: "-"}
+				<span className={tooltipClasses}>With next point:</span>
+				{bonusSheet[skillCurrentLevel] ? (
+					<>
+						{bonusSheet[skillCurrentLevel].value}
+						{isPercentage && "%"}
+					</>
+				) : (
+					"-"
+				)}
 			</p>
 		</>
 	);
@@ -97,28 +173,107 @@ const SkillNode = ({ skill }: SkillNodeProps) => {
 		<Tooltip content={TooltipContent}>
 			<Button
 				isImageButton
+				isMaxed={skillCurrentLevel === maxLevel}
 				onClick={handleClick}
 				onRightClick={handleRightClick}
 				disabled={isSkillMaxed || isSkillRequirementNotMet}
 			>
-				<img src={icon} />
-				<SkillLabel currentLevel={skillCurrentLevel} maxLevel={maxLevel} />
-				<span className={styles.skill__name}>{name}</span>
+				<div className={styles.skill}>
+					<img className={styles.skill__image} src={icon} />
+					<SkillLabel currentLevel={skillCurrentLevel} maxLevel={maxLevel} />
+					<span className={styles.skill__name}>{name}</span>
+				</div>
+				{requirement && (
+					<div
+						className={clsx(styles.skill__child, {
+							[styles["skill__connector--highlight"]]:
+								isSkillMaxed || (requirement && !isSkillRequirementNotMet),
+						})}
+					/>
+				)}
+				{childrenSkills?.length === 2 && (
+					<div
+						className={clsx(styles["skill__connector--double"], {
+							[styles["skill__connector--highlight"]]:
+								isSkillMaxed || (requirement && !isSkillRequirementNotMet),
+						})}
+					/>
+				)}
+				{childrenSkills?.length === 3 && (
+					<div
+						className={clsx(
+							styles.skill__connector,
+							styles["skill__connector--triple"],
+							{
+								[styles["skill__connector--highlight"]]:
+									isSkillMaxed || (requirement && !isSkillRequirementNotMet),
+							}
+						)}
+					/>
+				)}
 			</Button>
 		</Tooltip>
 	);
 };
 
-const SkillsColumn = ({ skill }: SkillColumnProps) => {
+const SkillsColumn = ({
+	skill,
+	level,
+	skillPoints,
+	skillPointsMax,
+	handleDecrementSkillPoints,
+	handleIncrementSkillPoints,
+}: SkillColumnProps) => {
+	const { resetSkills } = useSkillTree();
+
+	useEffect(() => {
+		resetSkills();
+	}, [level]);
+
 	return (
 		<div className={styles.tree__column}>
 			<div className={styles.tree__row}>
-				<SkillNode skill={skill} />
+				<SkillNode
+					skill={skill}
+					skillPoints={skillPoints}
+					skillPointsMax={skillPointsMax}
+					handleDecrementSkillPoints={handleDecrementSkillPoints}
+					handleIncrementSkillPoints={handleIncrementSkillPoints}
+				/>
 			</div>
 			{!skill?.childrenSkills ? null : (
-				<SkillsRow skills={skill.childrenSkills} />
+				<SkillsRow
+					skills={skill.childrenSkills}
+					level={level}
+					skillPoints={skillPoints}
+					skillPointsMax={skillPointsMax}
+					handleDecrementSkillPoints={handleDecrementSkillPoints}
+					handleIncrementSkillPoints={handleIncrementSkillPoints}
+				/>
 			)}
 		</div>
+	);
+};
+
+const checkIsSummaryNotNull = (
+	summary: ({
+		name: string;
+		value: number;
+		isPercentage: boolean;
+	} | null)[]
+): summary is {
+	name: string;
+	value: number;
+	isPercentage: boolean;
+}[] => {
+	return (
+		(
+			summary as {
+				name: string;
+				value: number;
+				isPercentage: boolean;
+			}[]
+		)[0] !== null
 	);
 };
 
@@ -126,8 +281,12 @@ const Summary = () => {
 	const { getSummary } = useSkillTree();
 	const summary = getSummary();
 
+	if (!checkIsSummaryNotNull(summary)) {
+		return null;
+	}
+
 	return (
-		<div>
+		<div className={styles.skill__summary}>
 			{summary.map(({ name, value, isPercentage }) => (
 				<span key={name}>
 					{name}: {value}
@@ -138,12 +297,28 @@ const Summary = () => {
 	);
 };
 
-export const SkillTree = ({ skills, showSummary = false }: SkillTreeProps) => {
+export const SkillTree = ({
+	skills,
+	showSummary = false,
+	level,
+	skillPoints,
+	skillPointsMax,
+	handleDecrementSkillPoints,
+	handleIncrementSkillPoints,
+}: SkillTreeProps) => {
 	return (
 		<SkillTreeProvider>
 			<div className={styles.tree}>
 				{skills.map((skill) => (
-					<SkillsColumn key={skill.name} skill={skill} />
+					<SkillsColumn
+						key={skill.name}
+						skill={skill}
+						level={level}
+						skillPoints={skillPoints}
+						skillPointsMax={skillPointsMax}
+						handleDecrementSkillPoints={handleDecrementSkillPoints}
+						handleIncrementSkillPoints={handleIncrementSkillPoints}
+					/>
 				))}
 			</div>
 			{showSummary && <Summary />}
