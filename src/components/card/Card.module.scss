@@ -1,6 +1,15 @@
+@use "../../variables.scss";
+
 .card {
-	width: 675px;
+	box-shadow: 1px 1px 4px 0px variables.$color-black;
 	border-radius: 4px;
+	width: 675px;
 	padding: 20px;
-	background-color: rgba(255, 255, 255, 0.2);
+	background: linear-gradient(rgba(227, 73, 73, 0.3), rgba(102, 113, 227, 0.3));
+
+	&__paragraph {
+		font-size: variables.$small-font-size;
+		line-height: 20px;
+		letter-spacing: 0px;
+	}
 }

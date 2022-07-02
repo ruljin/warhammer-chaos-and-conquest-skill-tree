@@ -16,7 +16,7 @@ export const Tooltip = ({ children, content }: TooltipProps) => {
 				styles["tooltip__content--visible"],
 				styles.tooltip__bottom
 			);
-		}, 400);
+		});
 	};
 
 	const handleHideTooltip = () => {
