@@ -1,0 +1,47 @@
+@use "../../variables.scss";
+
+.tooltip {
+	display: inline-block;
+	position: relative;
+
+	&__content {
+		position: absolute;
+		z-index: 1;
+		left: 50%;
+		bottom: -40px;
+		transform: translateX(-50%);
+		border-radius: 6px;
+		width: 300px;
+		height: 120px;
+		padding: 10px;
+		font-size: variables.$very-small-font-size;
+		background: rgb(13, 16, 19);
+		line-height: 1.25;
+		visibility: hidden;
+
+		&::before {
+			content: " ";
+			position: absolute;
+			left: 50%;
+			margin-left: -6px;
+			border: solid transparent;
+			border-width: 6px;
+			width: 0;
+			height: 0;
+			pointer-events: none;
+		}
+
+		&--visible {
+			visibility: visible;
+		}
+	}
+
+	&__bottom {
+		bottom: -60px;
+
+		&::before {
+			bottom: 100%;
+			border-bottom-color: variables.$color-main;
+		}
+	}
+}

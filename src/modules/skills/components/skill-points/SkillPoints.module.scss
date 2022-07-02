@@ -1,0 +1,75 @@
+@use "../../../../variables.scss";
+
+.points {
+	align-items: center;
+	display: flex;
+	height: 96px;
+	background-color: variables.$color-transparent-brown;
+
+	&__level {
+		position: relative;
+		align-items: center;
+		flex-direction: column;
+		display: flex;
+		margin: 0 20px 0 35px;
+		font-size: variables.$small-font-size;
+
+		&__container {
+			position: relative;
+		}
+	}
+
+	&__skills {
+		margin-top: 20px;
+		margin-left: 20px;
+	}
+
+	& button {
+		cursor: pointer;
+
+		&:disabled {
+			cursor: default;
+			filter: grayscale(100%);
+		}
+	}
+
+	& button:first-child {
+		left: -15px;
+	}
+
+	& button:last-child {
+		right: -15px;
+	}
+
+	&__button {
+		position: absolute;
+		bottom: -3px;
+		margin: 0;
+		border: none;
+		padding: 0;
+		background: none;
+	}
+
+	&__image {
+		width: 16px;
+		height: 16px;
+	}
+
+	&__text {
+		&--level {
+			text-transform: uppercase;
+			color: variables.$color-primary;
+			text-shadow: 1px 1px 1px variables.$color-primary;
+		}
+
+		&--value {
+			font-size: variables.$small-font-size;
+			color: variables.$color-white;
+		}
+
+		&--skills {
+			font-size: variables.$small-font-size;
+			color: variables.$color-white;
+		}
+	}
+}

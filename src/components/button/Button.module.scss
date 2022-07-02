@@ -1,13 +1,37 @@
+@use "../../variables.scss";
+
 .button {
 	width: 288px;
 	height: 56px;
 	background-image: url("../../assets/button.png");
-	color: #fff;
+	color: variables.$color-white;
 	text-transform: capitalize;
 	text-decoration: none;
 
 	&:hover {
 		filter: brightness(125%);
+	}
+
+	&__image {
+		position: relative;
+		background-image: none;
+		background-color: transparent;
+		border: none;
+		width: 115px;
+		height: 90px;
+		padding: 0;
+
+		&:disabled:hover {
+			filter: brightness(100%);
+		}
+
+		&--max {
+			filter: brightness(150%);
+
+			&:disabled:hover {
+				filter: brightness(150%);
+			}
+		}
 	}
 
 	&__link {

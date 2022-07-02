@@ -1,6 +1,7 @@
 .main {
 	&__actions {
-		display: flex;
 		justify-content: space-around;
+		display: flex;
+		margin-top: 20px;
 	}
 }

@@ -1,0 +1,92 @@
+@use "../../../../variables.scss";
+
+.tree {
+	align-items: center;
+	flex-direction: column;
+	display: flex;
+
+	&__column {
+		flex-direction: column;
+		display: flex;
+	}
+
+	&__row {
+		display: flex;
+	}
+
+	&__column {
+		flex-direction: column;
+		display: flex;
+		width: 155px;
+	}
+
+	&__row {
+		justify-content: center;
+		display: flex;
+		min-height: 150px;
+	}
+}
+
+.skill {
+	font-size: variables.$very-small-font-size;
+
+	&__child {
+		position: absolute;
+		top: -20px;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 3px;
+		height: 20px;
+		background-color: variables.$color-primary;
+	}
+
+	&__connector {
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+		height: 3px;
+		background-color: variables.$color-primary;
+
+		&--double {
+			width: 100px;
+		}
+
+		&--triple {
+			width: 313px;
+		}
+
+		&--highlight {
+			background-color: variables.$color-secondary;
+		}
+	}
+
+	&__image {
+		border-radius: 50%;
+		border-width: 2px;
+		border: solid variables.$color-primary;
+	}
+
+	&__name {
+		color: variables.$color-white;
+	}
+
+	&__summary {
+		align-items: center;
+		flex-direction: column;
+		display: flex;
+		font-weight: 500;
+		color: variables.$color-secondary;
+		text-shadow: 1px 1px 1px variables.$color-black;
+	}
+}
+
+.tooltip {
+	&__text {
+		display: inline-block;
+		width: 95px;
+	}
+
+	&__text--bold {
+		font-weight: 500;
+	}
+}
