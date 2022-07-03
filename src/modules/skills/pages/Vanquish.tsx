@@ -41,7 +41,7 @@ export const Vanquish = () => {
 					showSummary={true}
 					level={level}
 					skillPoints={skillPoints}
-					skillPointsMax={LEVELS[level + 1].vanquishPoints}
+					skillPointsMax={LEVELS[level - 1].vanquishPoints}
 					handleDecrementSkillPoints={handleDecrementSkillPoints}
 					handleIncrementSkillPoints={handleIncrementSkillPoints}
 				/>
