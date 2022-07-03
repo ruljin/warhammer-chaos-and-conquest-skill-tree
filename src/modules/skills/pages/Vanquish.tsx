@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card } from "../../../components";
+import { Button, Card } from "../../../components";
 import { SkillPoints } from "../components/skill-points";
 import { SkillTree } from "../components/skill-tree";
 import { LEVELS } from "../constants/levels";
@@ -46,6 +46,9 @@ export const Vanquish = () => {
 					handleIncrementSkillPoints={handleIncrementSkillPoints}
 				/>
 			</Card.Content>
+			<Card.Footer>
+				<Button to="/">Back</Button>
+			</Card.Footer>
 		</Card>
 	);
 };
