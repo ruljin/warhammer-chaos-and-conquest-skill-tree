@@ -3,6 +3,7 @@ import clsx from "clsx";
 import { SkillTreeProvider } from "../../context/SkillTreeContext";
 import { useSkillTree } from "../../hooks/useSkillTree";
 import { Button, Tooltip } from "../../../../components";
+import { SkillLabel } from "./SkillLabel";
 import { Skill } from "../../models/Skill";
 import styles from "./SkillTree.module.scss";
 import icon from "../../../../assets/temporary.png";
@@ -16,11 +17,6 @@ type SkillsRowProps = Pick<
 	| "handleDecrementSkillPoints"
 	| "handleIncrementSkillPoints"
 >;
-
-type SkillLabelProps = {
-	currentLevel: number;
-	maxLevel: number;
-};
 
 type SkillNodeProps = Pick<
 	SkillColumnProps,
@@ -72,18 +68,6 @@ const SkillsRow = ({
 				handleIncrementSkillPoints={handleIncrementSkillPoints}
 			/>
 		))}
-	</div>
-);
-
-const SkillLabel = ({ currentLevel, maxLevel }: SkillLabelProps) => (
-	<div>
-		{currentLevel === maxLevel ? (
-			<>&#10003;</>
-		) : (
-			<>
-				{currentLevel}/{maxLevel}
-			</>
-		)}
 	</div>
 );
 
