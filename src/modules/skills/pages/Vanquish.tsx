@@ -15,12 +15,12 @@ export const Vanquish = () => {
 		}
 
 		setLevel(level - 1);
-		setSkillPoints(LEVELS[level - 1].vanquishPoints);
+		setSkillPoints(LEVELS[level - 2].vanquishPoints);
 	};
 
 	const handleIncrementLevel = () => {
 		setLevel(level + 1);
-		setSkillPoints(LEVELS[level + 1].vanquishPoints);
+		setSkillPoints(LEVELS[level].vanquishPoints);
 	};
 
 	const handleDecrementSkillPoints = () => setSkillPoints(skillPoints - 1);
