@@ -113,10 +113,13 @@ const SkillNode = ({
 	};
 
 	const handleRightClick = () => {
+		const cantDecreaseLevel =
+			checkIfAnyChildIsSelected(childrenSkills) && skillCurrentLevel === 3;
+
 		if (
 			skillPoints === skillPointsMax ||
 			skillCurrentLevel === 0 ||
-			checkIfAnyChildIsSelected(childrenSkills)
+			cantDecreaseLevel
 		) {
 			return;
 		}
