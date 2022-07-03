@@ -1,10 +1,11 @@
+import { useEffect } from "react";
 import clsx from "clsx";
 import { SkillTreeProvider } from "../../context/SkillTreeContext";
+import { useSkillTree } from "../../hooks/useSkillTree";
 import { Button, Tooltip } from "../../../../components";
 import { Skill } from "../../models/Skill";
 import styles from "./SkillTree.module.scss";
-import { useSkillTree } from "../../hooks/useSkillTree";
-import { useEffect } from "react";
+import icon from "../../../../assets/temporary.png";
 
 type SkillsRowProps = Pick<
 	SkillTreeProps,
@@ -107,7 +108,6 @@ const SkillNode = ({
 	const {
 		name,
 		description,
-		icon,
 		maxLevel,
 		bonusType,
 		bonusSheet,
