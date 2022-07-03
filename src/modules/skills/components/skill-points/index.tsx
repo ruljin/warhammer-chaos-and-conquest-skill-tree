@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
+import clsx from "clsx";
 import styles from "./SkillPoints.module.scss";
 
 type SkillPointsProps = {
@@ -19,26 +19,22 @@ export const SkillPoints = ({
 			<div className={styles.points__level}>
 				<div className={styles.points__container}>
 					<button
-						className={styles.points__button}
+						className={clsx(
+							styles.points__button,
+							styles["points__button--decrement"]
+						)}
 						onClick={handleDecrementLevel}
 						disabled={level === 1}
-					>
-						<img
-							className={styles.points__image}
-							src="../src/assets/decrement.png"
-						/>
-					</button>
+					/>
 					<span className={styles["points__text--level"]}>Level</span>
 					<button
-						className={styles.points__button}
+						className={clsx(
+							styles.points__button,
+							styles["points__button--increment"]
+						)}
 						onClick={handleIncrementLevel}
 						disabled={level === 61}
-					>
-						<img
-							className={styles.points__image}
-							src="../src/assets/increment.png"
-						/>
-					</button>
+					/>
 				</div>
 				<div className={styles["points__text--value"]}>{level}</div>
 			</div>

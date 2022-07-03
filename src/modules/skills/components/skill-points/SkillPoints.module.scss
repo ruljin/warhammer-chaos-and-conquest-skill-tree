@@ -26,6 +26,8 @@
 
 	& button {
 		cursor: pointer;
+		width: 16px;
+		height: 16px;
 
 		&:disabled {
 			cursor: default;
@@ -48,11 +50,15 @@
 		border: none;
 		padding: 0;
 		background: none;
-	}
+		background-size: 16px;
 
-	&__image {
-		width: 16px;
-		height: 16px;
+		&--decrement {
+			background-image: url("../../../../assets/decrement.png");
+		}
+
+		&--increment {
+			background-image: url("../../../../assets/increment.png");
+		}
 	}
 
 	&__text {
