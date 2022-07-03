@@ -8,6 +8,8 @@ type ContentProps = Pick<CardProps, "children">;
 
 type ParagraphProps = Pick<CardProps, "children">;
 
+type FooterProps = Pick<CardProps, "children">;
+
 export const Card = ({ children, title }: CardProps) => {
 	const cardClasses = clsx(styles.card, { [styles["card--padding"]]: !title });
 
@@ -15,7 +17,7 @@ export const Card = ({ children, title }: CardProps) => {
 		<div className={cardClasses}>
 			{title ? (
 				<>
-					<div className={styles.card__title}>{title}</div>
+					<header className={styles.card__title}>{title}</header>
 					{children}
 				</>
 			) : (
@@ -32,5 +34,10 @@ export const Paragraph = ({ children }: ParagraphProps) => (
 	<p className={styles.card__paragraph}>{children}</p>
 );
 
+export const Footer = ({ children }: FooterProps) => (
+	<footer className={styles.card__footer}>{children}</footer>
+);
+
 Card.Content = Content;
 Card.Description = Paragraph;
+Card.Footer = Footer;
