@@ -127,8 +127,8 @@ const SkillNode = ({
 
 	const TooltipContent = (
 		<>
-			<p>{description}</p>
-			<p>
+			<p className={styles.tooltip__paragraph}>{description}</p>
+			<p className={styles.tooltip__paragraph}>
 				<span className={tooltipClasses}>Current bonus:</span>
 				{bonusSheet[skillCurrentLevel - 1] ? (
 					<>
@@ -139,7 +139,7 @@ const SkillNode = ({
 					"-"
 				)}
 			</p>
-			<p>
+			<p className={styles.tooltip__paragraph}>
 				<span className={tooltipClasses}>With next point:</span>
 				{bonusSheet[skillCurrentLevel] ? (
 					<>
@@ -149,6 +149,18 @@ const SkillNode = ({
 				) : (
 					"-"
 				)}
+			</p>
+			<p className={styles.tooltip__hint}>
+				<span
+					className={clsx(
+						styles["tooltip__text--bold"],
+						styles["tooltip__text--secondary"]
+					)}
+				>
+					{skillCurrentLevel === 0
+						? "Click to learn"
+						: "Right-click to unlearn"}
+				</span>
 			</p>
 		</>
 	);

@@ -81,12 +81,25 @@
 }
 
 .tooltip {
+	&__paragraph {
+		margin-top: 0;
+		margin-bottom: 10px;
+	}
+
 	&__text {
 		display: inline-block;
 		width: 95px;
+
+		&----bold {
+			font-weight: 500;
+		}
+
+		&--secondary {
+			color: variables.$color-secondary;
+		}
 	}
 
-	&__text--bold {
-		font-weight: 500;
+	&__hint {
+		margin-bottom: 0;
 	}
 }
